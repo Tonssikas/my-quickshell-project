@@ -5,8 +5,8 @@ import Quickshell.Io
 import qs.Style as Style
 import qs.bar.Performance.Networkdata as Network
 
-RowLayout {
-    spacing: 8
+ColumnLayout {
+    spacing: 3
 
     Text {
         id: download

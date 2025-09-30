@@ -10,11 +10,7 @@ Item {
 
     Text {
         id: mediaText
-         text: active && active.trackArtist !== "" 
-          ? (active.isPlaying ? " ▶ " : " ❚❚ ")
-            + active.trackArtist + " - " 
-            + active.trackTitle
-          : ""
+        text: active && active.trackArtist !== "" ? (active.isPlaying ? " ▶ " : " ❚❚ ") + active.trackArtist + " - " + active.trackTitle : ""
         color: "white"
         maximumLineCount: 1
         font.family: "JetBrainsMonoNerdFont-SemiBold"

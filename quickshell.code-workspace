@@ -1,0 +1,31 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.exclude": {
+            "**/.git": true,
+            "**/node_modules": true,
+            "**/.DS_Store": true,
+            "**/build": true
+        },
+        "search.exclude": {
+            "**/build": true,
+            "**/.git": true
+        },
+        "qml.importPaths": [
+            ".",
+            "./bar",
+            "./Style"
+        ]
+    },
+    "extensions": {
+        "recommendations": [
+            "theqtcompany.qt-qml",
+            "theqtcompany.qt-core",
+            "bbenoist.qml"
+        ]
+    }
+}

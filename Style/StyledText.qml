@@ -4,5 +4,5 @@ import Quickshell
 Text {
     text: "placeholder"
     color: Default.color
-    fontSize: Default.fontSize
+    font.pointSize: Default.pointSize
 }

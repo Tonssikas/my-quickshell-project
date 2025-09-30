@@ -29,9 +29,7 @@ Column {
                 text: Math.round(AudioLogic.defaultAudioSink.audio.volume * 100)
                 color: "white"
             }
-
         }
-
     }
 
     // Default audio Source
@@ -55,9 +53,6 @@ Column {
                 text: Math.round(AudioLogic.defaultAudioSource.audio.volume * 100)
                 color: "white"
             }
-
         }
-
     }
-
 }
