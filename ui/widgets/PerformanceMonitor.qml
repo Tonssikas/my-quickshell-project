@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick
 import Quickshell.Widgets
+import qs.ui.components
 
 Item {
 
@@ -24,16 +25,45 @@ Item {
 
             ColumnLayout {
 
-                ProgressBar {
-                    value: System.cpu_usage / 100
-                    Layout.preferredWidth: 75
-                    Layout.preferredHeight: 8
+                RowLayout {
+                    Item {
+                        Layout.preferredWidth: 30
+                        Layout.preferredHeight: 15
+                        StyledText {
+                            text: Math.round(System.cpu_usage) + "%"
+                        }
+                    }
+                    ProgressBar {
+                        value: System.cpu_usage / 100
+                        Layout.preferredWidth: 75
+                        Layout.preferredHeight: 8
+                    }
+                    IconImage {
+                        source: Qt.resolvedUrl("../../assets/icons/meter.png")
+                        Layout.preferredWidth: 16
+                        Layout.preferredHeight: 16
+                    }
                 }
 
-                ProgressBar {
-                    value: System.gpu_usage >= 0 ? System.gpu_usage / 100 : 0
-                    Layout.preferredWidth: 75
-                    Layout.preferredHeight: 8
+                RowLayout {
+                    Item {
+                        Layout.preferredWidth: 30
+                        Layout.preferredHeight: 15
+                        StyledText {
+                            text: System.cpu_temp >= 0 ? Math.round(System.cpu_temp) + "°C" : "N/A"
+                        }
+                    }
+                    ProgressBar {
+                        value: System.gpu_usage >= 0 ? System.gpu_usage / 100 : 0
+                        Layout.preferredWidth: 75
+                        Layout.preferredHeight: 8
+                    }
+
+                    IconImage {
+                        source: Qt.resolvedUrl("../../assets/icons/temperature.png")
+                        Layout.preferredWidth: 16
+                        Layout.preferredHeight: 16
+                    }
                 }
             }
         }
@@ -48,16 +78,44 @@ Item {
 
             ColumnLayout {
 
-                ProgressBar {
-                    value: System.cpu_usage / 100
-                    Layout.preferredWidth: 75
-                    Layout.preferredHeight: 8
-                }
+                RowLayout {
+                    Item {
+                        Layout.preferredWidth: 30
+                        Layout.preferredHeight: 15
 
-                ProgressBar {
-                    value: System.gpu_usage >= 0 ? System.gpu_usage / 100 : 0
-                    Layout.preferredWidth: 75
-                    Layout.preferredHeight: 8
+                        StyledText {
+                            text: Math.round(System.gpu_usage) + "%"
+                        }
+                    }
+                    ProgressBar {
+                        value: System.cpu_usage / 100
+                        Layout.preferredWidth: 75
+                        Layout.preferredHeight: 8
+                    }
+                    IconImage {
+                        source: Qt.resolvedUrl("../../assets/icons/meter.png")
+                        Layout.preferredWidth: 16
+                        Layout.preferredHeight: 16
+                    }
+                }
+                RowLayout {
+                    Item {
+                        Layout.preferredWidth: 30
+                        Layout.preferredHeight: 15
+                        StyledText {
+                            text: System.gpu_temp >= 0 ? Math.round(System.gpu_temp) + "°C" : "N/A"
+                        }
+                    }
+                    ProgressBar {
+                        value: System.gpu_usage >= 0 ? System.gpu_usage / 100 : 0
+                        Layout.preferredWidth: 75
+                        Layout.preferredHeight: 8
+                    }
+                    IconImage {
+                        source: Qt.resolvedUrl("../../assets/icons/temperature.png")
+                        Layout.preferredWidth: 16
+                        Layout.preferredHeight: 16
+                    }
                 }
             }
         }

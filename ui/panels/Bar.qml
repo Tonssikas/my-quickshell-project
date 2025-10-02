@@ -16,7 +16,7 @@ Scope {
             readonly property bool isPrimaryScreen: modelData.name === "DP-2"
 
             screen: modelData
-            implicitHeight: 50
+            implicitHeight: 40
             color: '#00000000'
 
             // Bar alignment
