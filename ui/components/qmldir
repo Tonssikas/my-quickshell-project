@@ -1,0 +1,6 @@
+module UI.Components
+
+ColorAnimation 1.0 ColorAnimation.qml
+NumberAnimation 1.0 NumberAnimation.qml
+StyledRectangle 1.0 StyledRectangle.qml
+StyledText 1.0 StyledText.qml

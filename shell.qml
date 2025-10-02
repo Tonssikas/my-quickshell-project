@@ -1,15 +1,13 @@
 //@ pragma UseQApplication
 import Quickshell
 import QtQuick
-import "bar"
-
+import qs.ui.panels
 
 ShellRoot {
-  id: root
-  
-  Loader {
-    active: true
-    sourceComponent: Bar{}
-}
+    id: root
 
+    Loader {
+        active: true
+        sourceComponent: Bar {}
+    }
 }

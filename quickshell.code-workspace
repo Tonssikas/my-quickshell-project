@@ -17,8 +17,7 @@
         },
         "qml.importPaths": [
             ".",
-            "./bar",
-            "./Style"
+            
         ]
     },
     "extensions": {
