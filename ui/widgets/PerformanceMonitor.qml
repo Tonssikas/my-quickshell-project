@@ -54,7 +54,7 @@ Item {
                         }
                     }
                     ProgressBar {
-                        value: System.gpu_usage >= 0 ? System.gpu_usage / 100 : 0
+                        value: System.cpu_temp >= 0 ? System.cpu_temp / 100 : 0
                         Layout.preferredWidth: 75
                         Layout.preferredHeight: 8
                     }
@@ -88,7 +88,7 @@ Item {
                         }
                     }
                     ProgressBar {
-                        value: System.cpu_usage / 100
+                        value: System.gpu_usage / 100
                         Layout.preferredWidth: 75
                         Layout.preferredHeight: 8
                     }
@@ -107,7 +107,7 @@ Item {
                         }
                     }
                     ProgressBar {
-                        value: System.gpu_usage >= 0 ? System.gpu_usage / 100 : 0
+                        value: System.gpu_temp >= 0 ? System.gpu_temp / 100 : 0
                         Layout.preferredWidth: 75
                         Layout.preferredHeight: 8
                     }
