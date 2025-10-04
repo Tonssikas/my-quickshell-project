@@ -2,6 +2,7 @@ import QtQuick 2.15
 import qs.ui.components
 import qs.config
 import qs.core.services
+import qs.themes
 
 Item {
     id: clockWidget
@@ -10,9 +11,9 @@ Item {
 
     StyledText {
         id: timeText
-        color: Appearance.colors.text.primary
+        color: Base.textPrimary
         text: Time.time
         font.bold: true
-        font.pointSize: 10
+        font.pointSize: 12
     }
 }

@@ -1,0 +1,3 @@
+module Themes
+
+singleton Base 1.0 Base.qml

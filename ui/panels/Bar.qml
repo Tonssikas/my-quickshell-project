@@ -1,9 +1,9 @@
 import Quickshell
-import QtQuick.Layouts
 import QtQuick
 import qs.ui.widgets
 import qs.ui.components
 import qs.ui.layouts.bar
+import qs.core
 
 Scope {
     Variants {
@@ -49,6 +49,13 @@ Scope {
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     isPrimaryScreen: panel.isPrimaryScreen
+                }
+            }
+
+            Component.onCompleted: {
+                // Register this bar window if the primary screen in Context for global access
+                if (panel.isPrimaryScreen) {
+                    Context.setBarWindow(panel);
                 }
             }
         }

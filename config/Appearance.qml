@@ -1,6 +1,8 @@
+pragma Singleton
 import Quickshell.Io
+import Quickshell
 
-QtObject {
+Singleton {
     property Rounding rounding: Rounding {}
     property Spacing spacing: Spacing {}
     property Padding padding: Padding {}

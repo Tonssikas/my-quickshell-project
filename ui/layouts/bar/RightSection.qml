@@ -13,15 +13,25 @@ Item {
         id: rightRow
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 15
+        spacing: 8
 
         Loader {
             active: root.isPrimaryScreen
             sourceComponent: PerformanceMonitor {}
         }
 
+        Loader {
+            active: root.isPrimaryScreen
+            sourceComponent: NetworkMonitor {}
+        }
+
         Item {
             Layout.preferredWidth: 750
+        }
+
+        Loader {
+            active: root.isPrimaryScreen
+            sourceComponent: NotificationWidget {}
         }
 
         Loader {

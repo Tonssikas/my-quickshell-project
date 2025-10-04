@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 import qs.config
 import QtQuick
+import qs.themes
 
 Text {
     id: root
@@ -13,7 +14,7 @@ Text {
 
     renderType: Text.NativeRendering
     textFormat: Text.PlainText
-    color: "darkorange"
+    color: Base.textPrimary
     font.family: "JetBrainsMonoNerdFont-SemiBold"
     font.pointSize: 10
 
@@ -27,13 +28,12 @@ Text {
         SequentialAnimation {
             Anim {
                 to: root.animateFrom
-                //easing.bezierCurve: config.Appearance.anim.curves.standardAccel
-                easing.bezierCurve: [0.3, 0, 1, 1, 1, 1]
+                easing.bezierCurve: Appearance.anim.curves.standardAccel
             }
             PropertyAction {}
             Anim {
                 to: root.animateTo
-                easing.bezierCurve: [0, 0, 0, 1, 1, 1]
+                easing.bezierCurve: Appearance.anim.curves.standardDecel
             }
         }
     }

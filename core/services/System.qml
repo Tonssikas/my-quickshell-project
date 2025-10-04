@@ -2,6 +2,7 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import qs.config
 
 Singleton {
     id: root
@@ -19,8 +20,8 @@ Singleton {
     property string ram_total: "N/A"
 
     Timer {
-        id: fastTimer
-        interval: 2000
+        id: normalTimer
+        interval: ServiceConfig.normalPollingInterval
         running: false
         repeat: true
 
@@ -33,14 +34,16 @@ Singleton {
     }
 
     Timer {
-        id: slowTimer
-        interval: 5000
+        id: fastTimer
+        interval: ServiceConfig.fastPollingInterval
         running: false
         repeat: true
 
         onTriggered:
         // Trigger processes to update data
-        {}
+        {
+            networkproc.running = true;
+        }
     }
 
     // CPU usage
@@ -146,11 +149,11 @@ Singleton {
     // Public API functions
     function startMonitoring() {
         fastTimer.start();
-        slowTimer.start();
+        normalTimer.start();
     }
     function stopMonitoring() {
         fastTimer.stop();
-        slowTimer.stop();
+        normalTimer.stop();
     }
 
     Component.onCompleted: {
