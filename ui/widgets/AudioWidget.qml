@@ -18,10 +18,10 @@ WidgetWrapper {
 
         RowLayout {
             id: content
-            Text {
+            StyledText {
                 id: volumeText
                 text: Audio.sink?.audio ? Math.round(Audio.sink.audio.volume * 100) + "%" : "N/A"
-                font.pixelSize: 12
+                font.pointSize: 12
                 color: "white"
             }
 

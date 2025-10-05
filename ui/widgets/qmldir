@@ -8,3 +8,4 @@ Workspaces 1.0 Workspaces.qml
 SystemTray 1.0 SystemTray.qml
 NetworkMonitor 1.0 NetworkMonitor.qml
 NotificationWidget 1.0 NotificationWidget.qml
+PowerMenuWidget 1.0 PowerMenuWidget.qml

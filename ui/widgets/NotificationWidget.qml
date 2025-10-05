@@ -13,34 +13,33 @@ WidgetWrapper {
     implicitWidth: content.implicitWidth + extraMargin
     implicitHeight: content.implicitHeight + extraMargin
 
-    RowLayout {
-        id: content
+    WrapperMouseArea {
         anchors.fill: parent
-        spacing: 0
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
+        onClicked: {
+            MenuManager.toggleNotificationMenu();
+        }
 
-        MouseArea {
+        RowLayout {
+            id: content
             anchors.fill: parent
-            hoverEnabled: true
-            cursorShape: Qt.PointingHandCursor
-            onClicked: {
-                MenuManager.toggleNotificationMenu();
+            spacing: 0
+
+            StyledText {
+                text: Notifications.list.length > 0 ? Notifications.list.length : ""
+                visible: Notifications.list.length > 0
+                font.bold: true
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                Layout.leftMargin: 5
             }
-        }
 
-        StyledText {
-            text: Notifications.list.length > 0 ? Notifications.list.length : ""
-            visible: Notifications.list.length > 0
-            font.pointSize: 12
-            font.bold: true
-            Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-            Layout.leftMargin: 5
-        }
-
-        IconImage {
-            source: Qt.resolvedUrl("../../assets/icons/notification.png")
-            Layout.preferredWidth: 24
-            Layout.preferredHeight: 24
-            Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+            IconImage {
+                source: Qt.resolvedUrl("../../assets/icons/notification.png")
+                Layout.preferredWidth: 24
+                Layout.preferredHeight: 24
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+            }
         }
     }
 }

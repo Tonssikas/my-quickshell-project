@@ -1,14 +1,19 @@
 pragma Singleton
-import QtQuick
 import qs.ui.menus
+import QtQuick
 
 QtObject {
     id: root
 
-    property var notificationMenu: null
+    property var notificationMenu: notificationMenuComponent.createObject(null)
+    property var powerMenu: powerMenuComponent.createObject(null)
 
     property Component notificationMenuComponent: Component {
         NotificationMenu {}
+    }
+
+    property Component powerMenuComponent: Component {
+        PowerMenu {}
     }
 
     function showNotificationMenu() {

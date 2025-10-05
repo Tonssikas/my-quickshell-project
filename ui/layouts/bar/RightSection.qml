@@ -18,6 +18,7 @@ Item {
         Loader {
             active: root.isPrimaryScreen
             sourceComponent: PerformanceMonitor {}
+            Layout.alignment: Qt.AlignLeft
         }
 
         Loader {
@@ -26,7 +27,7 @@ Item {
         }
 
         Item {
-            Layout.preferredWidth: 750
+            Layout.preferredWidth: 650
         }
 
         Loader {
@@ -42,6 +43,11 @@ Item {
         Loader {
             active: root.isPrimaryScreen
             sourceComponent: AudioWidget {}
+        }
+
+        Loader {
+            active: isPrimaryScreen
+            sourceComponent: PowerMenuWidget {}
         }
     }
 }

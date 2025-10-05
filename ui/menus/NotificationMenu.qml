@@ -1,18 +1,19 @@
 import QtQuick.Layouts
 import QtQuick
-import QtQuick.Controls
 import Quickshell
-import Quickshell.Widgets
 import qs.core.services
 import qs.ui.components
 import qs.themes
 import qs.core
+import qs.config
 
 PopupWindow {
     id: notificationMenu
 
+    property bool isOpen: false
+
     implicitWidth: 400
-    implicitHeight: 500
+    implicitHeight: 700
     visible: false
     color: "transparent"
 
@@ -30,21 +31,56 @@ PopupWindow {
         border.width: 1
         radius: 12
 
+        transform: Translate {
+            y: isOpen ? 0 : -notificationMenu.height
+
+            Behavior on y {
+                NumberAnimation {
+                    duration: Appearance.anim.durations.extraLarge
+                    easing.type: Easing.OutQuart
+                }
+            }
+        }
+
         ColumnLayout {
             anchors.fill: parent
-            anchors.margins: 16
+            anchors.margins: 12
             spacing: 12
 
-            // Header
-            StyledText {
-                text: `Notifications (${Notifications.list.length})`
-                color: Base.textPrimary
-                font.bold: true
+            RowLayout {
+                id: headerRow
                 Layout.fillWidth: true
-                Layout.alignment: Qt.AlignHCenter
+
+                // Header
+                StyledText {
+                    text: `Notifications (${Notifications.list.length})`
+                    color: Base.textPrimary
+                    font.bold: true
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignHCenter
+                }
+
+                StyledText {
+                    text: "Clear All"
+                    color: Base.textPrimary
+                    font.bold: true
+                    font.underline: true
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignRight
+                    Layout.leftMargin: -45
+                    visible: Notifications.list.length > 0
+
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: {
+                            Notifications.clearAll();
+                        }
+                    }
+                }
             }
 
-            // ListView for a scollable container
+            // ListView for a scrollable container
             ListView {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -55,7 +91,11 @@ PopupWindow {
 
                 delegate: StyledRectangle {
                     width: ListView.view.width
-                    height: 100
+                    height: notifContent.implicitHeight + 24
+                    implicitHeight: height
+                    property int minHeight: 60
+                    property int maxHeight: 200
+
                     color: Base.backgroundSecondary
                     border.color: Base.borderLight
                     border.width: 1
@@ -63,39 +103,42 @@ PopupWindow {
 
                     // Main content layout
                     ColumnLayout {
-                        anchors.fill: parent
-                        anchors.margins: 12
-                        spacing: 0
+                        id: notifContent
+                        width: parent.width - 24
+                        anchors.centerIn: parent
+                        spacing: 4
 
                         // Top row - timestamp and close button
                         RowLayout {
                             Layout.fillWidth: true
-                            Layout.preferredHeight: 16
+                            spacing: 8
 
                             Item {
                                 Layout.fillWidth: true
                             }
 
                             StyledText {
+                                id: timestampText
                                 text: `${modelData.appName || "Unknown"} • ${modelData.timeStr || "now"}`
                                 color: Base.textTertiary
-                                Layout.alignment: Qt.AlignTop
-                                elide: Text.ElideRight
-                                Layout.maximumWidth: 150
+                                elide: Text.ElideMiddle
+                                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                                Layout.maximumWidth: parent.width - 32
                             }
 
                             StyledRectangle {
                                 Layout.preferredWidth: 16
                                 Layout.preferredHeight: 16
+                                Layout.minimumWidth: 16
                                 radius: 8
                                 color: Base.backgroundHover
 
-                                //TODO: Change into an image?
                                 StyledText {
                                     anchors.centerIn: parent
-                                    text: "X"
+                                    text: "×"
                                     color: Base.textPrimary
                                     font.bold: true
+                                    font.pointSize: 16
                                 }
 
                                 MouseArea {
@@ -111,45 +154,44 @@ PopupWindow {
                         // Center content row - icon and text
                         RowLayout {
                             Layout.fillWidth: true
-                            Layout.fillHeight: true
                             spacing: 12
 
                             // App Icon
                             Image {
-                                // Placeholder if appIcon is empty
                                 source: modelData.appIcon != "" ? modelData.appIcon : Qt.resolvedUrl("../../assets/icons/notification.png")
                                 Layout.preferredHeight: 32
                                 Layout.preferredWidth: 32
+                                Layout.alignment: Qt.AlignTop
                             }
 
-                            // ✅ Centered text content
+                            // Text content - adaptive to content length
                             ColumnLayout {
                                 Layout.fillWidth: true
-                                Layout.fillHeight: true
-                                Layout.alignment: Qt.AlignVCenter
                                 spacing: 4
 
                                 StyledText {
                                     text: modelData.summary || "No title"
                                     Layout.fillWidth: true
-                                    Layout.alignment: Qt.AlignHCenter
-                                    horizontalAlignment: Text.AlignHCenter
                                     font.bold: true
                                     color: Base.textPrimary
-                                    elide: Text.ElideRight
                                     wrapMode: Text.WordWrap
-                                    maximumLineCount: 1
                                 }
 
                                 StyledText {
                                     text: modelData.body || ""
                                     Layout.fillWidth: true
-                                    Layout.alignment: Qt.AlignHCenter
-                                    horizontalAlignment: Text.AlignHCenter
                                     color: Base.textSecondary
-                                    elide: Text.ElideRight
                                     wrapMode: Text.WordWrap
-                                    maximumLineCount: 2
+                                    visible: text !== ""
+                                }
+
+                                // Content image (if any)
+                                Image {
+                                    source: modelData.image || ""
+                                    Layout.fillWidth: true
+                                    fillMode: Image.PreserveAspectFit
+
+                                    visible: source !== ""
                                 }
                             }
                         }
@@ -160,7 +202,6 @@ PopupWindow {
                 StyledText {
                     text: "No notifications"
                     color: Base.textSecondary
-                    Layout.fillWidth: true
                     anchors.centerIn: parent
                     visible: Notifications.list.length === 0
                 }
@@ -168,21 +209,43 @@ PopupWindow {
         }
     }
 
-    function toggle() {
-        visible = !visible;
+    Timer {
+        id: hideTimer
+        interval: Appearance.anim.durations.extraLarge
+        running: false
+
+        onTriggered: {
+            notificationMenu.visible = false;
+        }
     }
 
-    function open() {
-        visible = true;
+    function toggle() {
+        if (!isOpen) {
+            // Opening
+            open();
+        } else {
+            // Closing
+            close();
+        }
     }
 
     function close() {
-        visible = false;
+        if (isOpen) {
+            isOpen = false;
+            hideTimer.start();
+        }
+    }
+
+    function open() {
+        if (!isOpen) {
+            visible = true;
+            isOpen = true;
+            hideTimer.stop();
+        }
     }
 
     onVisibleChanged: {
         if (visible) {
-            console.log("Updating notification timestamps");
             Notifications.updateTimestamps();
         }
     }

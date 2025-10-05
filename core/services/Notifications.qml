@@ -62,7 +62,7 @@ Singleton {
         property string appIcon: notification?.appIcon ?? ""
         property string appName: notification?.appName ?? ""
         property string image: notification?.image ?? ""
-        property real expireTimeout: notification?.expireTimeout ?? 8000
+        property real expireTimeout: 4000 // Popups expire after 4s by default
         property int urgency: notification?.urgency ?? 1
         property bool resident: notification?.resident ?? false
         property bool hasActionIcons: notification?.hasActionIcons ?? false
@@ -76,22 +76,25 @@ Singleton {
             interval: notif.expireTimeout > 0 ? notif.expireTimeout : 5000
             onTriggered: {
                 notif.popup = false;
+                /*
                 if (!notif.resident && !notif.isDestroying) {
                     root.removeNotification(notif);
                 }
+                */
             }
         }
 
         readonly property Connections conn: Connections {
-            target: notif.notification
+            target: notif.notification ?? null
             enabled: notif.notification !== null && !notif.isDestroying
 
+            /*
             function onClosed() {
                 if (!notif.isDestroying) {
                     root.removeNotification(notif);
                 }
             }
-
+*/
             function onSummaryChanged() {
                 if (notif.notification && !notif.isDestroying) {
                     notif.summary = notif.notification.summary;
@@ -178,12 +181,12 @@ Singleton {
         imageSupported: true
         inlineReplySupported: false
         bodyHyperlinksSupported: true
-        keepOnReload: true
+        keepOnReload: false
         persistenceSupported: true
         actionIconsSupported: false
         bodySupported: true
         bodyMarkupSupported: false
-        bodyImagesSupported: false
+        bodyImagesSupported: true
 
         Component.onCompleted: {
             console.log("NotificationServer created successfully");
@@ -225,7 +228,8 @@ Singleton {
     // Save timer for writing to disk
     Timer {
         id: saveTimer
-        interval: 60000
+        interval: 1000  // Save 1 second after last notification
+        repeat: false
         onTriggered: root.save()
     }
 
@@ -255,17 +259,19 @@ Singleton {
                 }
                 root.list = [];
 
-                const seenIds = new Set();
+                // Duplicate detection for debugging
+
+                //const seenIds = new Set();
                 const loadedWrappers = [];
 
                 for (const notifData of data) {
-                    const uniqueKey = notifData.id ? `${notifData.appName || 'unknown'}-${notifData.id}` : `${notifData.appName || 'unknown'}-${notifData.summary}-${notifData.time}`;
-
+                    //const uniqueKey = `${notifData.appName || 'unknown'}-${notifData.summary}-${notifData.body}-${notifData.time}`;
+                    /*
                     if (seenIds.has(uniqueKey)) {
                         console.log("Skipping duplicate notification:", uniqueKey);
                         continue;
                     }
-
+                    */
                     const wrapper = notificationComponent.createObject(root, {
                         "time": new Date(notifData.time),
                         "popup": false
@@ -280,7 +286,7 @@ Singleton {
                         wrapper.urgency = notifData.urgency || 1;
                         wrapper.id = notifData.id || "";
 
-                        seenIds.add(uniqueKey);
+                        //seenIds.add(uniqueKey);
                         loadedWrappers.push(wrapper);
                     }
                 }
@@ -343,7 +349,6 @@ Singleton {
         wrapper.cleanup();
         wrapper.destroy();
 
-        saveTimer.restart();
         root.save();
 
         console.log("Notification removed, remaining count:", root.list.length);
