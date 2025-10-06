@@ -18,6 +18,7 @@ Singleton {
 
     property string ram_usage: "N/A"
     property string ram_total: "N/A"
+    property string ram_available: "N/A"
 
     Timer {
         id: normalTimer
@@ -30,6 +31,7 @@ Singleton {
             cpuUsage.running = true;
             temperatureProcess.running = true;
             gpuUsage.running = true;
+            ramUsage.running = true;
         }
     }
 
@@ -110,7 +112,6 @@ Singleton {
         id: networkproc
 
         command: ["vnstat", "-tr", "3", "-i", "wlan0", "--json"]
-        //command: ["vnstat", "--live", "-i", "wlan0"]
         running: true
 
         stdout: StdioCollector {
@@ -137,10 +138,30 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                const parts = this.text.trim().split(" ");
+                const parts = this.text.trim().split(/\s+/);
                 if (parts.length >= 2) {
                     root.cpu_temp = parseFloat(parts[0]).toFixed(0) || 0;
                     root.gpu_temp = parseFloat(parts[1]).toFixed(0) || 0;
+                }
+            }
+        }
+    }
+
+    // RAM usage
+
+    Process {
+        id: ramUsage
+        running: true
+
+        command: ["sh", "-c", "free -h | grep Mem"]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const parts = this.text.trim().split(/\s+/);
+                if (parts.length >= 7) {
+                    root.ram_total = parts[1];
+                    root.ram_usage = parts[2];
+                    root.ram_available = parts[6];
                 }
             }
         }

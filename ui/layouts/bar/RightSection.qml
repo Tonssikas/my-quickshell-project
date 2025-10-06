@@ -23,11 +23,16 @@ Item {
 
         Loader {
             active: root.isPrimaryScreen
+            sourceComponent: RamWidget {}
+        }
+
+        Loader {
+            active: root.isPrimaryScreen
             sourceComponent: NetworkMonitor {}
         }
 
         Item {
-            Layout.preferredWidth: 650
+            Layout.preferredWidth: 550
         }
 
         Loader {
