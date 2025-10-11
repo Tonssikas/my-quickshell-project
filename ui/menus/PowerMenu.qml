@@ -12,25 +12,26 @@ PopupWindow {
     id: window
     implicitWidth: 50
     implicitHeight: 275
-    visible: false || hideTimer.running
+    visible: isOpen || hideTimer.running
     color: "transparent"
 
     anchor {
         window: Context.barWindow
-        rect.x: screen.width - width
-        rect.y: 45
-        adjustment: PopupAdjustment.Slide
+        rect.x: isOpen ? screen.width - width : screen.width + 100
+        rect.y: 45 
     }
+
 
     property bool isOpen: false
 
     StyledRectangle {
+        id: content
         anchors.fill: parent
         color: Base.background
         border.color: Base.borderColor
         border.width: 1
         radius: 12
-
+        
         transform: Translate {
             y: isOpen ? 0 : -window.height
 
@@ -41,6 +42,7 @@ PopupWindow {
                 }
             }
         }
+
 
         ColumnLayout {
             id: layout
@@ -137,18 +139,14 @@ PopupWindow {
         interval: Appearance.anim.durations.extraLarge
         running: false
         repeat: false
-        onTriggered: {
-            window.isOpen = false;
-        }
     }
 
     function toggleMenu() {
-        window.isOpen = !window.isOpen;
         if (window.isOpen) {
-            window.visible = true;
-            hideTimer.stop();
-        } else {
+            window.isOpen = false;
             hideTimer.start();
+        } else {
+            window.isOpen = true;
         }
     }
 }
