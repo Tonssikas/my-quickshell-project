@@ -2,3 +2,4 @@ module Config
 
 singleton Appearance 1.0 Appearance.qml
 singleton ServiceConfig 1.0 ServiceConfig.qml
+singleton General 1.0 General.qml

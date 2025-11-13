@@ -1,0 +1,3 @@
+module UI.Controls
+
+singleton Keybinds 1.0 Keybinds.qml
