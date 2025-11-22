@@ -16,7 +16,6 @@ Text {
     textFormat: Text.PlainText
     color: Base.textPrimary
     font.family: "JetBrainsMonoNerdFont-SemiBold"
-    font.pointSize: 10
 
     Behavior on color {
         ColorAnimation {}
