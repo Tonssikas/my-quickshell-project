@@ -29,37 +29,24 @@ Scope {
             }
 
             Item {
-    anchors.fill: parent
-    anchors.margins: 8
+                anchors.fill: parent
+                anchors.margins: 4
 
-    RowLayout {
-        id: barRow
-        anchors.fill: parent
-        spacing: 12
+                LeftSection {
+                    anchors.left: parent.left
+                    isPrimaryScreen: panel.isPrimaryScreen
+                }
 
-        LeftSection {
-            Layout.alignment: Qt.AlignLeft || Qt.AlignVCenter
-            Layout.fillHeight: true
-            isPrimaryScreen: panel.isPrimaryScreen
-        }
+                CenterSection {
+                    anchors.centerIn: parent
+                    isPrimaryScreen: panel.isPrimaryScreen
+                }
 
-
-
-        CenterSection {
-            anchors.centerIn: parent
-            Layout.fillHeight: true
-            isPrimaryScreen: panel.isPrimaryScreen
-        }
-
-
-
-        RightSection {
-            Layout.alignment: Qt.AlignRight || Qt.AlignVCenter
-            Layout.fillHeight: true
-            isPrimaryScreen: panel.isPrimaryScreen
-        }
-    }
-}
+                RightSection {
+                    anchors.right: parent.right
+                    isPrimaryScreen: panel.isPrimaryScreen
+                }
+            }
 
 
             Component.onCompleted: {
