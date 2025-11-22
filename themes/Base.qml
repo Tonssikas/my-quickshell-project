@@ -4,7 +4,7 @@ import Quickshell
 
 Singleton {
     // ✅ Background colors
-    property color background: "#80000000"        // 50% opacity black
+    property color background: "#85424040"
     property color backgroundSecondary: "#99000000"  // 60% opacity black (darker)
     property color backgroundTertiary: "#66000000"   // 40% opacity black (lighter)
     property color backgroundCard: "#B3000000"       // 70% opacity black (cards/panels)

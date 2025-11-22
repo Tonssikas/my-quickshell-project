@@ -7,8 +7,6 @@ import qs.core
 
 WidgetWrapper {
 
-    extraMargin: 16
-
     Item {
         id: audioWidget
         anchors.centerIn: parent

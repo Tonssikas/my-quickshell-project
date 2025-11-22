@@ -1,0 +1,77 @@
+# VS Code configuration files
+.vscode/
+.vscode/*
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+
+# QML Language Server files
+.qmlls.ini
+*.qmlc
+*.jsc
+
+# Qt Creator files
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.moc
+*.moc.cpp
+*.qm
+*.prl
+
+# Build artifacts
+build/
+build-*/
+*build*
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cbp
+
+# Qt temporary files
+qrc_*.cpp
+moc_*.cpp
+moc_*.h
+ui_*.h
+*.qmlc
+*.jsc
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.swp
+*.swo
+*~
+
+# IDE files
+*.sublime-project
+*.sublime-workspace
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# OS generated files
+.directory
+*.autosave
+
+# Qt Quick Designer files
+*.qmlproject.user
+*.qmlproject.user.*
+
+# Quickshell specific temporary files
+*.qs.backup
+*.quickshell.tmp

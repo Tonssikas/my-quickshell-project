@@ -145,7 +145,7 @@ PopupWindow {
                                     anchors.fill: parent
                                     cursorShape: Qt.PointingHandCursor
                                     onClicked: {
-                                        modelData.close();
+                                        modelData.dismiss();
                                     }
                                 }
                             }

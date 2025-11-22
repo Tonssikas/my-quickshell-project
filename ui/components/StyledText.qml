@@ -10,7 +10,7 @@ Text {
     property string animateProp: "scale"
     property real animateFrom: 0
     property real animateTo: 1
-    property int animateDuration: 400
+    property int animateDuration: Appearance.anim.durations.normal
 
     renderType: Text.NativeRendering
     textFormat: Text.PlainText

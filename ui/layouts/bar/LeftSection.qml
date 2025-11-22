@@ -11,7 +11,7 @@ Item {
 
     RowLayout {
         id: leftColumn
-        Layout.alignment: Qt.AlignLeft
+        anchors.verticalCenter: parent.verticalCenter
 
         Loader {
             Layout.alignment: Qt.AlignLeft // Aligns to left in RowLayout

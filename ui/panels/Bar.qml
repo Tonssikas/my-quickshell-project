@@ -1,8 +1,10 @@
 import Quickshell
 import QtQuick
+import QtQuick.Layouts
 import qs.ui.widgets
 import qs.ui.components
 import qs.ui.layouts.bar
+import qs.config
 import qs.core
 
 Scope {
@@ -16,7 +18,7 @@ Scope {
             readonly property bool isPrimaryScreen: modelData.name === "DP-2"
 
             screen: modelData
-            implicitHeight: 40
+            implicitHeight: General.barHeight
             color: '#00000000'
 
             // Bar alignment
@@ -27,30 +29,38 @@ Scope {
             }
 
             Item {
-                anchors.fill: parent
-                anchors.margins: 8
+    anchors.fill: parent
+    anchors.margins: 8
 
-                // Left section - anchored to left
-                LeftSection {
-                    anchors.left: parent.left
-                    anchors.verticalCenter: parent.verticalCenter
-                    isPrimaryScreen: panel.isPrimaryScreen
-                }
+    RowLayout {
+        id: barRow
+        anchors.fill: parent
+        spacing: 12
 
-                // Center section - anchored to center
-                CenterSection {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
-                    isPrimaryScreen: panel.isPrimaryScreen
-                }
+        LeftSection {
+            Layout.alignment: Qt.AlignLeft || Qt.AlignVCenter
+            Layout.fillHeight: true
+            isPrimaryScreen: panel.isPrimaryScreen
+        }
 
-                // Right section - anchored to right
-                RightSection {
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    isPrimaryScreen: panel.isPrimaryScreen
-                }
-            }
+
+
+        CenterSection {
+            anchors.centerIn: parent
+            Layout.fillHeight: true
+            isPrimaryScreen: panel.isPrimaryScreen
+        }
+
+
+
+        RightSection {
+            Layout.alignment: Qt.AlignRight || Qt.AlignVCenter
+            Layout.fillHeight: true
+            isPrimaryScreen: panel.isPrimaryScreen
+        }
+    }
+}
+
 
             Component.onCompleted: {
                 // Register this bar window if the primary screen in Context for global access

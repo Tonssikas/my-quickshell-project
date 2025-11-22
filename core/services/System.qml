@@ -20,6 +20,8 @@ Singleton {
     property string ram_total: "N/A"
     property string ram_available: "N/A"
 
+    property int updates_available: 0
+
     Timer {
         id: normalTimer
         interval: ServiceConfig.normalPollingInterval
@@ -45,6 +47,17 @@ Singleton {
         // Trigger processes to update data
         {
             networkproc.running = true;
+        }
+    }
+
+    Timer {
+        id: verySlowTimer
+        interval: ServiceConfig.verySlowPollingInterval
+        running: false
+        repeat: true
+
+        onTriggered: {
+            checkUpdates.running = true;
         }
     }
 
@@ -167,10 +180,32 @@ Singleton {
         }
     }
 
+    // Update checker process
+
+    Process {
+        id: checkUpdates
+        running: true
+
+        command : [
+            "sh", "-c",
+            "repo=$(checkupdates 2>/dev/null | wc -l) && aur=$(yay -Qua 2>/dev/null | wc -l) && echo $((repo + aur))"
+        ]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const result = parseInt(this.text) || 0
+                root.updates_available = result;
+
+                console.log("update count: " + result);
+            }
+        }
+    }
+
     // Public API functions
     function startMonitoring() {
         fastTimer.start();
         normalTimer.start();
+        verySlowTimer.start();
     }
     function stopMonitoring() {
         fastTimer.stop();

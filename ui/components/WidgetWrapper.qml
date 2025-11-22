@@ -1,22 +1,31 @@
 import Quickshell.Widgets
 import QtQuick
+import qs.config
+import qs.themes
 
 WrapperRectangle {
     id: wrapper
 
     default property alias contentItem: contentContainer.children
 
-    // Configurable styling properties
-    property int extraMargin: 16
-    property int borderRadius: 12
-    property color borderColor: '#85be8130'
-    property color backgroundColor: "#85424040"
-    property int borderWidth: 1
+    resizeChild: true
 
-    implicitWidth: contentContainer.implicitWidth + extraMargin
-    implicitHeight: (contentContainer.implicitHeight + extraMargin) < 35 ? (contentContainer.implicitHeight + extraMargin) : 35
+    // Styling properties
+    property int extraMargin: General.widgetExtraMargin
+    property int borderRadius: General.widgetBorderRadius
+    property color borderColor: Base.accent
+    property color backgroundColor: Base.background
+    property int borderWidth: General.widgetBorderWidth
+    
+    // Padding inside the wrapper
+    property int leftPadding: extraMargin / 2
+    property int rightPadding: extraMargin / 2
+    property int topPadding: 0
+    property int bottomPadding: 0
 
-    // Apply styling
+    implicitWidth: contentContainer.implicitWidth + leftPadding + rightPadding
+    implicitHeight: General.widgetMaxHeight
+
     radius: borderRadius
     border.width: borderWidth
     border.color: borderColor
@@ -24,8 +33,33 @@ WrapperRectangle {
 
     Item {
         id: contentContainer
-        anchors.centerIn: parent
-        implicitWidth: children.length > 0 ? children[0].implicitWidth : 0
-        implicitHeight: children.length > 0 ? children[0].implicitHeight : 0
+
+        anchors {
+            fill: parent
+            leftMargin: wrapper.leftPadding
+            rightMargin: wrapper.rightPadding
+            topMargin: wrapper.topPadding
+            bottomMargin: wrapper.bottomPadding
+        }
+
+        implicitWidth: {
+            var w = 0
+            for (var i = 0; i < children.length; i++) {
+                if (children[i].visible) {
+                    w = Math.max(w, children[i].implicitWidth)
+                }
+            }
+            return w
+        }
+
+        implicitHeight: {
+            var h = 0
+            for (var i = 0; i < children.length; i++) {
+                if (children[i].visible) {
+                    h = Math.max(h, children[i].implicitHeight)
+                }
+            }
+            return h
+        }
     }
 }

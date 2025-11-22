@@ -4,6 +4,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Notifications
+import qs.config
 
 Singleton {
     id: root
@@ -62,25 +63,27 @@ Singleton {
         property string appIcon: notification?.appIcon ?? ""
         property string appName: notification?.appName ?? ""
         property string image: notification?.image ?? ""
-        property real expireTimeout: 4000 // Popups expire after 4s by default
+        property real expireTimeout: {
+            const t = notification?.expireTimeout;
+            return (typeof t === "number" && t >= 0) ? t : General.defaultNotificationTimeout;
+        }
         property int urgency: notification?.urgency ?? 1
         property bool resident: notification?.resident ?? false
         property bool hasActionIcons: notification?.hasActionIcons ?? false
         property list<var> actions: []
         property bool popup: true
-
         property bool isDestroying: false
 
         readonly property Timer expireTimer: Timer {
             running: notif.popup && notif.expireTimeout > 0 && !notif.isDestroying
-            interval: notif.expireTimeout > 0 ? notif.expireTimeout : 5000
+            interval: notif.expireTimeout > 0 ? notif.expireTimeout : General.defaultNotificationTimeout
             onTriggered: {
                 notif.popup = false;
-                /*
+                
                 if (!notif.resident && !notif.isDestroying) {
-                    root.removeNotification(notif);
+                    notif.close();
                 }
-                */
+                
             }
         }
 
@@ -88,13 +91,13 @@ Singleton {
             target: notif.notification ?? null
             enabled: notif.notification !== null && !notif.isDestroying
 
-            /*
+            
             function onClosed() {
                 if (!notif.isDestroying) {
                     root.removeNotification(notif);
                 }
             }
-*/
+
             function onSummaryChanged() {
                 if (notif.notification && !notif.isDestroying) {
                     notif.summary = notif.notification.summary;
@@ -152,10 +155,10 @@ Singleton {
             function onActionsChanged() {
                 if (notif.notification && !notif.isDestroying) {
                     notif.actions = notif.notification.actions.map(a => ({
-                                identifier: a.identifier,
-                                text: a.text,
-                                invoke: () => a.invoke()
-                            }));
+                        identifier: a.identifier,
+                        text: a.text,
+                        invoke: () => a.invoke()
+                    }));
                 }
             }
         }
@@ -167,9 +170,16 @@ Singleton {
             notification = null;
         }
 
-        function close() {
+        function dismiss() {
             if (!isDestroying && notification && typeof notification.dismiss === 'function') {
                 notification.dismiss();
+            }
+            root.removeNotification(notif);
+        }
+
+        function close() {
+            if (!isDestroying && notification && typeof notification.expire === 'function') {
+                notification.expire();
             }
             root.removeNotification(notif);
         }
@@ -228,7 +238,7 @@ Singleton {
     // Save timer for writing to disk
     Timer {
         id: saveTimer
-        interval: 1000  // Save 1 second after last notification
+        interval: General.notificationSaveInterval
         repeat: false
         onTriggered: root.save()
     }
@@ -236,7 +246,7 @@ Singleton {
     FileView {
         id: storage
 
-        path: `${Quickshell.env("HOME")}/.local/state/quickshell/notifs.json`
+        path: General.notificationSaveLocation
         onLoaded: {
             try {
                 const textContent = text();
@@ -259,19 +269,9 @@ Singleton {
                 }
                 root.list = [];
 
-                // Duplicate detection for debugging
-
-                //const seenIds = new Set();
                 const loadedWrappers = [];
 
                 for (const notifData of data) {
-                    //const uniqueKey = `${notifData.appName || 'unknown'}-${notifData.summary}-${notifData.body}-${notifData.time}`;
-                    /*
-                    if (seenIds.has(uniqueKey)) {
-                        console.log("Skipping duplicate notification:", uniqueKey);
-                        continue;
-                    }
-                    */
                     const wrapper = notificationComponent.createObject(root, {
                         "time": new Date(notifData.time),
                         "popup": false
@@ -286,7 +286,6 @@ Singleton {
                         wrapper.urgency = notifData.urgency || 1;
                         wrapper.id = notifData.id || "";
 
-                        //seenIds.add(uniqueKey);
                         loadedWrappers.push(wrapper);
                     }
                 }

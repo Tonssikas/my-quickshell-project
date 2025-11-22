@@ -10,3 +10,4 @@ NetworkMonitor 1.0 NetworkMonitor.qml
 NotificationWidget 1.0 NotificationWidget.qml
 PowerMenuWidget 1.0 PowerMenuWidget.qml
 RamWidget 1.0 RamWidget.qml
+UpdateChecker 1.0 UpdateChecker.qml

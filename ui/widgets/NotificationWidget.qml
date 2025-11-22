@@ -10,9 +10,6 @@ import Quickshell
 WidgetWrapper {
     id: notificationWidget
 
-    implicitWidth: content.implicitWidth + extraMargin
-    implicitHeight: content.implicitHeight + extraMargin
-
     WrapperMouseArea {
         anchors.fill: parent
         hoverEnabled: true
@@ -23,8 +20,7 @@ WidgetWrapper {
 
         RowLayout {
             id: content
-            anchors.fill: parent
-            spacing: 0
+            anchors.centerIn: parent
 
             StyledText {
                 text: Notifications.list.length > 0 ? Notifications.list.length : ""
