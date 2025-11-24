@@ -1,21 +1,26 @@
 pragma Singleton
 import QtQuick
 import Quickshell
-import qs.core.model
+import qs.core.models
 
 Singleton {
 
-    property var todoList: []
+    property list<TodoItem> todoList: []
 
 
     function addTodoItem(name, strikeout = false) {
-        todoList.push({
-            name: name,
-            strikeout: strikeout
-        });
+        const comp = Qt.createComponent("../models/TodoItem.qml")
+        if (comp.status === Component.Ready) {
+            const item = comp.createObject(null, {
+                name: name,
+                strikeout: strikeout
+            })
+
+            todoList.push(item);
+        }
     }
 
-    function deleteTodoItem(item): void {
+    function deleteTodoItem(item: TodoItem): void {
         if (!item) { return }
 
         const index = todoList.indexOf(item);
@@ -26,7 +31,7 @@ Singleton {
         
     }
 
-    function toggleStrikeout(item): void {
+    function toggleStrikeout(item: TodoItem): void {
         if (!item) { return }
 
         item.strikeout = !item.strikeout

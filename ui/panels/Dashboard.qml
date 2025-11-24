@@ -14,7 +14,6 @@ PanelWindow {
 
     aboveWindows: true
     exclusiveZone: 0
-    
     anchors {
         top: true
         bottom: true
@@ -42,13 +41,13 @@ PanelWindow {
         }
 
         onClicked: {
-            dashboard.close();
+            //dashboard.close();
         }
 
         Item {
             anchors.fill: parent
 
-            StyledRectangle {
+            StyledRectangle {    
                 color: Base.background
                 width: parent.width
                 height: parent.height

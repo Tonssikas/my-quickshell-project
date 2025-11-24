@@ -5,6 +5,7 @@ import qs.config
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Widgets
+import QtQuick.Controls
 
 
 WrapperRectangle {
@@ -17,40 +18,63 @@ WrapperRectangle {
     border.width: 1
     border.color: Base.accent
     margin: 25
-    topMargin: 30
-    bottomMargin: 30
+    topMargin: 15
+    bottomMargin: 15
 
-     Item {
+     ColumnLayout {
         id: container
         implicitWidth: root.width - Appearance.padding.large
         implicitHeight: listView.implicitHeight + 100
+        spacing: 50
 
-    
+
+        ColumnLayout {
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignHCenter
+            TextField {
+                placeholderText: "..."
+                horizontalAlignment: TextInput.AlignCenters
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignHCenter
+                activeFocusOnPress: true
+                onPressed: forceActiveFocus()
+            }
+
+            RoundButton {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.preferredWidth: 200
+            }
+
+            
+        }
 
         ListView {
             id: listView
-            anchors.fill: parent
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.margins: 10
             spacing: 15
             model: TodoList.todoList
-            anchors.margins: 20 
-            implicitHeight: Math.min(contentHeight, 200)
+            
+            implicitHeight: Math.min(contentHeight, 300)
             flickableDirection: Flickable.VerticalFlick
             boundsBehavior: Flickable.StopAtBounds
+            clip: true
 
-            delegate: WrapperRectangle {
+            delegate: Rectangle {
                 id: listViewItem
 
                 radius: 10
                 color: Base.backgroundSecondary
                 border.width: 1
                 border.color: Base.accent
-                topMargin: 15
-                bottomMargin: 15
-
-                width: container.width - Appearance.padding.large
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.margins: 20
+                
+                width: container.width - Appearance.padding.large - 35
+                height: content.implicitHeight + 30
 
                 RowLayout {
+                    id: contentRow
                     anchors.fill: parent
                     anchors.margins: 12
 

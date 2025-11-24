@@ -61,7 +61,7 @@ Item {
                 Todo {
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: parent.width
-                }   
+                }
             }
             Item {
                 id: activityTab
