@@ -8,7 +8,19 @@ import qs.config
 import qs.ui.layouts.dashboard
 import qs.ui.layouts
 
-PopupWindow {
+
+
+PanelWindow {
+
+    aboveWindows: true
+    exclusiveZone: 0
+    
+    anchors {
+        top: true
+        bottom: true
+        right: true
+    }
+
     id: dashboard
 
     property var parentWindow: Context.barWindow
@@ -19,19 +31,14 @@ PopupWindow {
     visible: false
     color: "transparent"
 
-    anchor {
-        window: parentWindow
-        rect.x: screen.width - width
-        rect.y: screen.height * 0.05
-        adjustment: PopupAdjustment.None
-    }
+    
 
     WrapperMouseArea {
         anchors.fill: parent
         hoverEnabled: true
 
         onExited: {
-            dashboard.close();
+            //dashboard.close();
         }
 
         onClicked: {
@@ -62,6 +69,7 @@ PopupWindow {
                 DashboardContent {
                     anchors.fill: parent
                 }
+                
             }
         }
     }

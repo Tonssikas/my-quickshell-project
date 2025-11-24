@@ -10,11 +10,8 @@ WidgetWrapper {
 
     border.width: 3
     border.color: Base.background
-    color: '#6e473205'
+    color: Base.backgroundSecondary
 
-    anchors.top: parent.top
-    anchors.horizontalCenter: parent.horizontalCenter
-    //anchors.topMargin: Screen.height * 0.01
     implicitWidth: headerRow.implicitWidth + extraMargin
     implicitHeight: headerRow.implicitHeight + extraMargin
 
@@ -22,6 +19,7 @@ WidgetWrapper {
         id: headerRow
         anchors.fill: parent
         spacing: 25
+        Layout.margins: 4
 
         IconImage {
             source: Qt.resolvedUrl("../../../assets/icons/placeholder.svg")
