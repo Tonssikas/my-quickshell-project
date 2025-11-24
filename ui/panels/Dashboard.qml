@@ -6,7 +6,7 @@ import qs.ui.components
 import qs.themes
 import qs.config
 import qs.ui.layouts.dashboard
-
+import Quickshell.Hyprland
 
 
 
@@ -32,46 +32,48 @@ PanelWindow {
 
     
 
-    WrapperMouseArea {
+    
+
+    Item {
         anchors.fill: parent
-        hoverEnabled: true
 
-        onExited: {
-            //dashboard.close();
-        }
+        StyledRectangle {    
+            color: Base.background
+            width: parent.width
+            height: parent.height
+            radius: 12
+            border.color: Base.borderColor
+            border.width: 3
 
-        onClicked: {
-            //dashboard.close();
-        }
+            x: isOpen ? 0 : width
 
-        Item {
-            anchors.fill: parent
-
-            StyledRectangle {    
-                color: Base.background
-                width: parent.width
-                height: parent.height
-                radius: 12
-                border.color: Base.borderColor
-                border.width: 3
-
-                x: isOpen ? 0 : width
-
-                Behavior on x {
-                    NumberAnimation {
-                        duration: Appearance.anim.durations.extraLarge
-                        easing.type: Easing.OutQuart
-                    }
+            Behavior on x {
+                NumberAnimation {
+                    duration: Appearance.anim.durations.extraLarge
+                    easing.type: Easing.OutQuart
                 }
-
-                // Content
-                DashboardContent {
-                    anchors.fill: parent
-                }
-                
             }
+
+            // Content
+            DashboardContent {
+                anchors.fill: parent
+            }
+            
         }
     }
+    
+
+    HyprlandFocusGrab {
+        id: focusGrab
+        active: dashboard.isOpen && dashboard.visible
+        windows: [dashboard]
+        
+        onCleared: {
+            // Optional: auto-close when user clicks outside
+            dashboard.close()
+        }
+    }
+
     // Timer to add delay before hiding the dashboard so the closing animation can play
     Timer {
         id: hideTimer

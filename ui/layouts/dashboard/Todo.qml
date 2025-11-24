@@ -32,20 +32,39 @@ WrapperRectangle {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
             TextField {
+                id: inputField
+                color: Base.textPrimary
                 placeholderText: "..."
-                horizontalAlignment: TextInput.AlignCenters
+                horizontalAlignment: TextInput.AlignCenter
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
                 activeFocusOnPress: true
                 onPressed: forceActiveFocus()
+
+                implicitHeight: contentHeight + 25
+
+                background: StyledRectangle {
+                    color: Base.backgroundTertiary
+                    radius: 10
+                    border.width: 1
+                    border.color: Base.accent}
             }
 
             RoundButton {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: 200
-            }
+                text: "Add Item"
 
-            
+                onClicked: {
+                    const text = inputField.text
+
+                    if (text !== "") {
+                        TodoList.addTodoItem(inputField.text)
+                        inputField.clear()
+                    } 
+                    
+                }
+            }
         }
 
         ListView {
@@ -56,7 +75,7 @@ WrapperRectangle {
             spacing: 15
             model: TodoList.todoList
             
-            implicitHeight: Math.min(contentHeight, 300)
+            implicitHeight: Math.min(contentHeight, 500)
             flickableDirection: Flickable.VerticalFlick
             boundsBehavior: Flickable.StopAtBounds
             clip: true
