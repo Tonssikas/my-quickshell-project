@@ -7,26 +7,11 @@ import Quickshell.Services.Pipewire
 Singleton {
     id: root
 
-    property var pw: Pipewire
-
-    // Default sink/source for easy access
-
-    readonly property var nodes: Pipewire.nodes.values.reduce((acc, node) => {
-        if (!node.isStream) {
-            if (node.isSink) {
-                acc.sinks.push(node);
-            } else if (node.audio) {
-                acc.sources.push(node);
-            }
-        }
-        return acc;
-    }, {
-        sinks: [],
-        sources: []
-    })
-
-    readonly property list<PwNode> sinks: nodes.sinks
-    readonly property list<PwNode> sources: nodes.sources
+    readonly property var allNodes: Pipewire.nodes?.values ?? []
+    readonly property list<PwNode> applications: allNodes.filter(n => n.audio && n.isStream && n.isSink)
+    readonly property list<PwNode> inputs: allNodes.filter(n => n.audio && n.isStream && !n.isSink)
+    readonly property list<PwNode> sinkList: allNodes.filter(n => n.audio && n.properties['media.class'] == "Audio/Sink")
+    readonly property list<PwNode> sourceList: allNodes.filter(n => n.audio && n.properties['media.class'] == "Audio/Source")
 
     readonly property PwNode sink: Pipewire.defaultAudioSink
     readonly property PwNode source: Pipewire.defaultAudioSource
@@ -37,10 +22,10 @@ Singleton {
     readonly property bool sourceMuted: !!source?.audio?.muted
     readonly property real sourceVolume: source?.audio?.volume ?? 0
 
-    function setVolume(newVolume: real): void {
-        if (sink?.ready && sink?.audio) {
-            sink.audio.muted = false;
-            sink.audio.volume = Math.max(0, Math.min(1, newVolume));
+    function setVolume(newVolume: real, node: PwNode): void {
+        if (node.ready && sink.audio) {
+            node.audio.muted = false;
+            node.audio.volume = Math.max(0, Math.min(1, newVolume));
         }
     }
     function incrementVolume(amount: real): void {
@@ -60,10 +45,12 @@ Singleton {
 
     function setAudioSink(newSink: PwNode): void {
         Pipewire.preferredDefaultAudioSink = newSink;
+        console.log("Setting default audio sink to", newSink.description)
     }
 
     function setAudioSource(newSource: PwNode): void {
         Pipewire.preferredDefaultAudioSource = newSource;
+        console.log("Setting default audio source to", newSource.description)
     }
 
     onSinkChanged:
@@ -76,15 +63,24 @@ Singleton {
 
     PwObjectTracker {
         id: tracker
-        objects: [root.sink, root.source]
+        objects: [...allNodes]
     }
 
     Component.onCompleted: {
+
+        
         console.log("AudioLogic initialized");
         console.log("Default sink:", root.sink?.name || "None");
         console.log("Default source:", root.source?.name || "None");
-        console.log(root.sink.audio.volume);
+        console.log("allnodes: ", allNodes.length);
+        console.log("Audio applications count: ", applications.length);
+        console.log("Inputs count: ", inputs.length);
+        console.log("Physical sources: ", sourceList.length );
+        console.log("Physical sinks: ", sinkList.length)
+        console.log(allNodes.forEach(n => console.log(n.name, " ", n.isStream, "", n.isSink)))
     }
 
     // Beat tracker? (CAVA)
 }
+
+
