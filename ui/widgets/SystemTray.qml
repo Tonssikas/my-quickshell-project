@@ -19,7 +19,6 @@ WidgetWrapper {
                 IconImage {
                     visible: true
                     source: modelData.icon
-
                     width: 20
                     height: 20
 
@@ -51,9 +50,11 @@ WidgetWrapper {
         }
 
         Component.onCompleted: {
+            /*
             console.log("Systemtray debug:" + SystemTray.items.values[1].icon);
             console.log("Menu handle: " + SystemTray.items.values[1].menu);
             console.log("Menu: " + SystemTray.items.values[1]);
+            */
         }
     }
 }
