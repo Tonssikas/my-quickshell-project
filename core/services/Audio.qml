@@ -68,7 +68,7 @@ Singleton {
 
     Component.onCompleted: {
 
-        
+        /*
         console.log("AudioLogic initialized");
         console.log("Default sink:", root.sink?.name || "None");
         console.log("Default source:", root.source?.name || "None");
@@ -78,6 +78,7 @@ Singleton {
         console.log("Physical sources: ", sourceList.length );
         console.log("Physical sinks: ", sinkList.length)
         console.log(allNodes.forEach(n => console.log(n.name, " ", n.isStream, "", n.isSink)))
+        */
     }
 
     // Beat tracker? (CAVA)

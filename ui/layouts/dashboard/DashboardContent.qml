@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import qs.ui.layouts
+
 
 // Main content area for the dashboard
 
@@ -10,12 +10,12 @@ Item {
     id: layout
 
     // Layout properties
-    anchors.margins: 30
+    
 
     ColumnLayout {
         id: content
-        Layout.fillWidth: true
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.fill: parent
+        anchors.margins: 30
 
         /*
         Header {
@@ -33,7 +33,7 @@ Item {
                 text: qsTr("Audio")
             }
             TabButton {
-                text: qsTr("Placeholder")
+                text: qsTr("Todo List")
             }
             TabButton {
                 text: qsTr("Placeholder")
@@ -43,25 +43,25 @@ Item {
 
         StackLayout {
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
 
             currentIndex: bar.currentIndex
 
             Item {
                 id: audioTab
-
-                ColumnLayout {
+                AudioControls {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: layout.width
+                    width: parent.width
 
-                    AudioControls {
-                        Layout.alignment: Qt.AlignHCenter
-                        Layout.fillWidth: true
-
-                    }
                 }
             }
             Item {
-                id: discoverTab
+                id: todoList
+                
+                Todo {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: parent.width
+                }   
             }
             Item {
                 id: activityTab

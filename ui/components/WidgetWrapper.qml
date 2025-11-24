@@ -3,7 +3,7 @@ import QtQuick
 import qs.config
 import qs.themes
 
-WrapperRectangle {
+WrapperItem {
     id: wrapper
 
     default property alias contentItem: contentContainer.children
@@ -25,6 +25,8 @@ WrapperRectangle {
 
     implicitWidth: contentContainer.implicitWidth + leftPadding + rightPadding
     implicitHeight: General.widgetMaxHeight
+
+    Rectangle {
 
     radius: borderRadius
     border.width: borderWidth
@@ -61,5 +63,5 @@ WrapperRectangle {
             }
             return h
         }
-    }
+    }}
 }
