@@ -10,10 +10,7 @@ WidgetWrapper {
 
     topPadding: 10
     bottomPadding: 25
-
-    property var applications: Audio.applications
-    property var inputs: Audio.inputs
-
+    
     implicitHeight: content.implicitHeight + topPadding + bottomPadding
     implicitWidth: content.implicitWidth + leftPadding + rightPadding
 
@@ -31,7 +28,7 @@ WidgetWrapper {
 
         Repeater {
 
-            model: applications.length
+            model: Audio.applications
 
             delegate: ColumnLayout {
                 Layout.alignment: Qt.AlignHCenter
@@ -41,7 +38,7 @@ WidgetWrapper {
                 StyledText {
                     id: text
                     Layout.alignment: Qt.AlignHCenter
-                    text: applications[index].description === "" ? applications[index].name : applications[index].description
+                    text: modelData.description === "" ? modelData.name : modelData.description
                 }
 
                 Slider {
@@ -49,9 +46,9 @@ WidgetWrapper {
                     Layout.alignment: Qt.AlignHCenter
                     from: 0
                     to: 100
-                    value: applications[index].audio.volume * 100
+                    value: modelData.audio.volume * 100
 
-                    onMoved: { Audio.setVolume(Math.floor(value)/100, applications[index])}
+                    onMoved: { Audio.setVolume(Math.floor(value)/100, modelData)}
                 }
             }
         
@@ -67,7 +64,7 @@ WidgetWrapper {
 
         Repeater {
 
-            model: inputs.length
+            model: Audio.inputs
 
             delegate: ColumnLayout {
                 Layout.alignment: Qt.AlignHCenter
@@ -77,7 +74,7 @@ WidgetWrapper {
                 StyledText {
                     id: text
                     Layout.alignment: Qt.AlignHCenter
-                    text: inputs[index].name
+                    text: modelData.name
                 }
 
                 Slider {
@@ -85,9 +82,9 @@ WidgetWrapper {
                     Layout.alignment: Qt.AlignHCenter
                     from: 0
                     to: 100
-                    value: inputs[index].audio.volume * 100
+                    value: modelData.audio.volume * 100
 
-                    onMoved: { Audio.setVolume(Math.floor(value)/100, inputs[index])}
+                    onMoved: { Audio.setVolume(Math.floor(value)/100, modelData)}
                 }
             }
         

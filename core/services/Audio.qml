@@ -8,10 +8,10 @@ Singleton {
     id: root
 
     readonly property var allNodes: Pipewire.nodes?.values ?? []
-    readonly property list<PwNode> applications: allNodes.filter(n => n.audio && n.isStream && n.isSink)
-    readonly property list<PwNode> inputs: allNodes.filter(n => n.audio && n.isStream && !n.isSink)
-    readonly property list<PwNode> sinkList: allNodes.filter(n => n.audio && n.properties['media.class'] == "Audio/Sink")
-    readonly property list<PwNode> sourceList: allNodes.filter(n => n.audio && n.properties['media.class'] == "Audio/Source")
+    readonly property list<PwNode> applications: allNodes.filter(n => n.audio && n.isStream && n.isSink) ?? []
+    readonly property list<PwNode> inputs: allNodes.filter(n => n.audio && n.isStream && !n.isSink) ?? []
+    readonly property list<PwNode> sinkList: allNodes.filter(n => n.audio && n.properties['media.class'] == "Audio/Sink") ?? []
+    readonly property list<PwNode> sourceList: allNodes.filter(n => n.audio && n.properties['media.class'] == "Audio/Source") ?? []
 
     readonly property PwNode sink: Pipewire.defaultAudioSink
     readonly property PwNode source: Pipewire.defaultAudioSource
@@ -68,7 +68,7 @@ Singleton {
 
     Component.onCompleted: {
 
-        /*
+        
         console.log("AudioLogic initialized");
         console.log("Default sink:", root.sink?.name || "None");
         console.log("Default source:", root.source?.name || "None");
@@ -78,7 +78,7 @@ Singleton {
         console.log("Physical sources: ", sourceList.length );
         console.log("Physical sinks: ", sinkList.length)
         console.log(allNodes.forEach(n => console.log(n.name, " ", n.isStream, "", n.isSink)))
-        */
+        
     }
 
     // Beat tracker? (CAVA)
