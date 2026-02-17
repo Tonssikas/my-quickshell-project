@@ -188,7 +188,8 @@ Singleton {
 
         command : [
             "sh", "-c",
-            "repo=$(checkupdates 2>/dev/null | wc -l) && aur=$(yay -Qua 2>/dev/null | wc -l) && echo $((repo + aur))"
+            "repo=$(checkupdates 2>/dev/null | wc -l) && aur=$(paru -Qua 2>/dev/null | wc -l) && echo $((repo + aur))"
+
         ]
 
         stdout: StdioCollector {
