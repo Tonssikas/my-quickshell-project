@@ -26,12 +26,11 @@ PanelWindow {
     property bool isOpen: false
 
     implicitHeight: screen.height * 0.9
-    implicitWidth: 500
+    implicitWidth: isOpen ? 500 : 0
     visible: false
     color: "transparent"
 
     
-
     
 
     Item {
@@ -78,7 +77,7 @@ PanelWindow {
     Timer {
         id: hideTimer
         interval: Appearance.anim.durations.extraLarge
-        onTriggered: dashboard.visible = false
+        //onTriggered: dashboard.visible = false
     }
 
     function toggle() {

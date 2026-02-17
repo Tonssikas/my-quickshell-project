@@ -44,27 +44,31 @@ Item {
         StackLayout {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
-
             currentIndex: bar.currentIndex
 
-            Item {
-                id: audioTab
-                AudioControls {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: parent.width
-
+            Loader {
+                sourceComponent: Item {
+                    AudioControls {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: parent.width
+                    }
                 }
+                active: bar.currentIndex === 0
             }
-            Item {
-                id: todoList
-                
-                Todo {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: parent.width
+            
+            Loader {
+                sourceComponent: Item {
+                    Todo {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: parent.width
+                    }
                 }
+                active: bar.currentIndex === 1
             }
-            Item {
-                id: activityTab
+            
+            Loader {
+                sourceComponent: Item {}
+                active: bar.currentIndex === 2
             }
         }
     }
