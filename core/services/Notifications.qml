@@ -68,7 +68,7 @@ Singleton {
             return (typeof t === "number" && t >= 0) ? t : General.defaultNotificationTimeout;
         }
         property int urgency: notification?.urgency ?? 1
-        property bool resident: notification?.resident ?? false
+        property bool resident: notification?.resident ?? true
         property bool hasActionIcons: notification?.hasActionIcons ?? false
         property list<var> actions: []
         property bool popup: true
@@ -79,8 +79,10 @@ Singleton {
             interval: notif.expireTimeout > 0 ? notif.expireTimeout : General.defaultNotificationTimeout
             onTriggered: {
                 notif.popup = false;
-                
-                if (!notif.resident && !notif.isDestroying) {
+
+                if (!notif.resident && notif.isDestroying) {
+                    console.log("is resident? ", notif.resident)
+                    console.log("is destroying? ", notif.isDestroying)
                     notif.close();
                 }
                 
@@ -191,7 +193,7 @@ Singleton {
         imageSupported: true
         inlineReplySupported: false
         bodyHyperlinksSupported: true
-        keepOnReload: false
+        keepOnReload: true
         persistenceSupported: true
         actionIconsSupported: false
         bodySupported: true
